@@ -4,6 +4,10 @@ using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
 using Books.Business;
+using Microsoft.Owin.Cors;
+using System.Net.Http.Formatting;
+using System.Linq;
+using Newtonsoft.Json.Serialization;
 
 [assembly: OwinStartup(typeof(Books.Api.Startup))]
 
@@ -21,6 +25,10 @@ namespace Books.Api
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
 
 

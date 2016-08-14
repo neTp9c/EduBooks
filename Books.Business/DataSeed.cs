@@ -60,7 +60,7 @@ namespace Books.Business
                 new Book
                 {
                     Title = "Design Patterns: Elements of Reusable Object-Oriented Software",
-                    ISBN = "8601419047741",
+                    Isbn = "8601419047741",
                     PublicationYear = 1994,
                     PageCount = 395,
                     Publisher = publisherAddisonWesleyProfessional,
