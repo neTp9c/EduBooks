@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using Books.Business;
 
 [assembly: OwinStartup(typeof(Books.Api.Startup))]
 
@@ -21,6 +22,11 @@ namespace Books.Api
             );
 
             app.UseWebApi(config);
+
+
+
+            var dataSeed = new DataSeed();
+            dataSeed.Seed();
         }
     }
 }
