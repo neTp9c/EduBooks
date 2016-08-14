@@ -11,13 +11,15 @@ namespace Books.Api.Controllers
     
     public class BooksController : ApiController
     {
-        private readonly BookManager _bookManager;
+        private readonly IBookManager _bookManager;
         private readonly IConverter<Book, BookVm> _bookToBookVmConverter;
 
-        public BooksController()
+        public BooksController(
+            IBookManager bookManager,
+            IConverter<Book, BookVm> bookToBookVmConverter)
         {
-            _bookManager = new BookManager();
-            _bookToBookVmConverter = new BookToBookVmConverter();
+            _bookManager = bookManager;
+            _bookToBookVmConverter = bookToBookVmConverter;
         }
 
         // GET api/<controller>

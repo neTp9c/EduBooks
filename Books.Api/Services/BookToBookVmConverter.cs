@@ -9,10 +9,12 @@ namespace Books.Api.Services
         private readonly IConverter<Author, AuthorVm> _authorToAuthorVmConverter;
         private readonly IConverter<Publisher, PublisherVm> _publisherToPublisherVmConverter;
 
-        public BookToBookVmConverter()
+        public BookToBookVmConverter(
+            IConverter<Author, AuthorVm> authorToAuthorVmConverter,
+            IConverter<Publisher, PublisherVm> publisherToPublisherVmConverter)
         {
-            _authorToAuthorVmConverter = new AuthorToAuthorVmConverter();
-            _publisherToPublisherVmConverter = new PublisherToPublisherVmConverter();
+            _authorToAuthorVmConverter = authorToAuthorVmConverter;
+            _publisherToPublisherVmConverter = publisherToPublisherVmConverter;
         }
 
         public BookVm Convert(Book book)

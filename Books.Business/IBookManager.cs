@@ -9,28 +9,40 @@ using System.Threading.Tasks;
 
 namespace Books.Business
 {
-    public class BookManager
+    public interface IBookManager
+    {
+        void Create(Book book);
+        void Delete(Book book);
+        Book GetBook(int id);
+        IEnumerable<Book> GetBooks();
+        void Update(Book book);
+    }
+
+    public class BookManager : IBookManager
     {
         private readonly BookContext _booksContext;
 
-        public BookManager()
+        public BookManager(BookContext booksContext)
         {
-            _booksContext = new BookContext();
+            _booksContext = booksContext;
         }
 
         public void Create(Book book)
         {
             _booksContext.Books.Add(book);
+            _booksContext.SaveChanges();
         }
 
         public void Update(Book book)
         {
             _booksContext.Books.Update(book);
+            _booksContext.SaveChanges();
         }
 
         public void Delete(Book book)
         {
             _booksContext.Books.Remove(book);
+            _booksContext.SaveChanges();
         }
 
         public Book GetBook(int id)
