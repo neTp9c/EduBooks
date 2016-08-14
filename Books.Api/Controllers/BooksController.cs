@@ -1,5 +1,5 @@
 ﻿using Books.Api.Services;
-using Books.Api.ViewModels.Books;
+using Books.Api.ViewModels;
 using Books.Business;
 using Books.Entities;
 using System.Collections.Generic;
@@ -12,18 +12,18 @@ namespace Books.Api.Controllers
     public class BooksController : ApiController
     {
         private readonly BookManager _bookManager;
-        private readonly IConverter<Book, BookVM> _bookToVmConverter;
+        private readonly IConverter<Book, BookVm> _bookToBookVmConverter;
 
         public BooksController()
         {
             _bookManager = new BookManager();
-            _bookToVmConverter = new BookToBookViewModelConverter();
+            _bookToBookVmConverter = new BookToBookVmConverter();
         }
 
         // GET api/<controller>
-        public IEnumerable<BookVM> Get()
+        public IEnumerable<BookVm> Get()
         {
-            var books = _bookManager.GetBooks().Select(b => _bookToVmConverter.Convert(b));
+            var books = _bookManager.GetBooks().Select(b => _bookToBookVmConverter.Convert(b));
             return books;
         }
 
@@ -33,9 +33,25 @@ namespace Books.Api.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post(BookVm bookVm)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var book = new Book
+            {
+                Title = bookVm.Title,
+                PageCount = bookVm.PageCount,
+                Isbn = bookVm.Isbn,
+                PublicationYear = bookVm.PublicationYear,
+                Image = bookVm.Image
+            };
+
+            _bookManager.Create(book);
+
+            return Ok(_bookToBookVmConverter.Convert(book));
         }
 
         // PUT api/<controller>/5
