@@ -1,5 +1,6 @@
 ﻿using Books.Data;
 using Books.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,12 +35,22 @@ namespace Books.Business
 
         public Book GetBook(int id)
         {
-            return _booksContext.Books.SingleOrDefault(b => b.Id == id);
+            return GetEagerBooksQuery()
+                .SingleOrDefault(b => b.Id == id);
         }
 
         public IEnumerable<Book> GetBooks()
         {
-            return _booksContext.Books.ToList();
+            return GetEagerBooksQuery()
+                .ToList();
+        }
+
+        private IQueryable<Book> GetEagerBooksQuery()
+        {
+            // ef core doesn't support lazy-loading yet
+            return _booksContext.Books
+                .Include(b => b.Publisher)
+                .Include(b => b.BookAuthors).ThenInclude(ba => ba.Author);
         }
     }
 }
