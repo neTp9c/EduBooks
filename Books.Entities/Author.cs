@@ -13,6 +13,6 @@ namespace Books.Entities
         public string LastName { get; set; }
 
 
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<BookAuthor> BookAuthors { get; set; }
     }
 }

@@ -14,9 +14,10 @@ namespace Books.Entities
         public int PublicationYear { get; set; }
         public string ISBN { get; set; }
         public byte[] Image { get; set; }
+        public int PublisherId { get; set; }
 
 
-        public virtual ICollection<Publisher> Publisher { get; set; }
-        public virtual ICollection<Author> Authors { get; set; }
+        public virtual Publisher Publisher { get; set; }
+        public virtual ICollection<BookAuthor> BookAuthors { get; set; }
     }
 }
