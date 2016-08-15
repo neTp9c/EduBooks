@@ -26,6 +26,6 @@ namespace Books.Api.ViewModels
         public PublisherVm Publisher { get; set; }
 
         [MinLength(1)]
-        public IEnumerable<AuthorVm> Authors { get; set; }
+        public AuthorVm[] Authors { get; set; }
     }
 }

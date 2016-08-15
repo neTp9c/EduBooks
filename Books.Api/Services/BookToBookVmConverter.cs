@@ -31,7 +31,7 @@ namespace Books.Api.Services
                     ? _publisherToPublisherVmConverter.Convert(book.Publisher)
                     : null,
                 Authors = book.BookAuthors != null
-                    ? book.BookAuthors.Select(ba => _authorToAuthorVmConverter.Convert(ba.Author))
+                    ? book.BookAuthors.Select(ba => _authorToAuthorVmConverter.Convert(ba.Author)).ToArray()
                     : null
             };
         }
