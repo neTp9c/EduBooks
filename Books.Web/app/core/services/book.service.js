@@ -1,4 +1,4 @@
-﻿app.factory("bookService", ['$http', "bookEditorSettings", function ($http, bookEditorSettings) {
+﻿app.factory("bookService", ['$http', 'bookEditorSettings', 'Upload', function ($http, bookEditorSettings, Upload) {
     
     var bookServiceFactory = {};
 
@@ -8,11 +8,21 @@
     }
 
     var _addBook = function (book) {
-        return $http.post(_baseUrl, book);
+        return Upload.upload({
+            url: _baseUrl,
+            data: book,
+            objectKey: '.k',
+            arrayKey: '[i]'
+        });
     };
 
     var _updateBook = function (book) {
-        return $http.put(_getUrl(book.id), book);
+        return Upload.upload({
+            url: _getUrl(book.id),
+            data: book,
+            objectKey: '.k',
+            arrayKey: '[i]'
+        });
     }
 
     var _deleteBook = function (bookId) {
