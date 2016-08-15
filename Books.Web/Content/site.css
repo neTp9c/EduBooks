@@ -34,3 +34,9 @@
     display: inline-block;
     margin-left: 10px;
 }
+.sort-by__item.active {
+    color: rgba(0,0,255,1);
+}
+.sort-by__item.active.reverse {
+    color: rgba(0,150,255,1);
+}

@@ -4,10 +4,14 @@
             <h2>Books</h2>
             <div>
                 Sort by:
-                <a ng-click="sortBy('title')" class="sort-by__item">title</a>
-                <a class="sort-by__item" ng-click="sortBy('publicationYear')">publication year</a>
+                <a class="sort-by__item"
+                   ng-click="sortBy('title')"
+                   data-ng-class="{'active':sortingSettings.sortByProperty == 'title', 'reverse': sortingSettings.sortInReverseOrder}">title</a>
+                <a class="sort-by__item"
+                   ng-click="sortBy('publicationYear')"
+                   data-ng-class="{'active':sortingSettings.sortByProperty == 'publicationYear', 'reverse': sortingSettings.sortInReverseOrder}">publication year</a>
             </div>
-            <div data-ng-repeat="book in books | orderBy:sortByProperty:sortInReverseOrder"
+            <div data-ng-repeat="book in books | orderBy:sortingSettings.sortByProperty:sortingSettings.sortInReverseOrder"
                  data-ng-click="setEditedBook(book)"
                  data-ng-class="{'active':isCurrentItem(book.id), 'panel panel-default book summary':true}">
                 <div class="panel-body">
@@ -105,7 +109,7 @@
                         <div ng-message="pattern">Please enter correct ISBN without spaces or dashes.</div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group form-book__image-form-group">
                     <label for="imageFile">Image</label>
                     <div ng-switch on="editedBook.isImageExists && !editedBook.isNeedRemoveImage">
                         <div ng-switch-when="true">
@@ -124,14 +128,6 @@
                                ng-if="editedBook.isImageExists && editedBook.isNeedRemoveImage">Restore image</a>
                         </div>
                     </div>
-                    <!--<span class="progress" ng-show="imageFile.progress >= 0">
-                        <div style="width:{{imageFile.progress}}%"
-                             ng-bind="imageFile.progress + '%'"></div>
-                    </span>
-                    <span ng-show="imageFile.result">Upload Successful</span>
-                    <span class="err" ng-show="errorMsg">{{errorMsg}}</span>-->
-                    </d
-                    iv
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-default"

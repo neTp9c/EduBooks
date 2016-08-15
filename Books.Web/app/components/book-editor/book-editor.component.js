@@ -1,20 +1,34 @@
 ﻿app.component("bookEditor", {
     templateUrl: '/app/components/book-editor/book-editor.view.html',
-    controller: ['$scope', 'bookService', bookEditorController]
+    controller: ['$scope', 'bookService', 'localStorageService', bookEditorController]
 });
 
-function bookEditorController($scope, bookService) {
-    $scope.sortByProperty = "title";
-    $scope.sortInReverseOrder = false;
+function bookEditorController($scope, bookService, localStorageService) {
+    var _saveSortingSettings = function () {
+        localStorageService.set('booksSortingSettings', $scope.sortingSettings);
+    };
+
+    var _loadSortingSettings = function () {
+        $scope.sortingSettings = localStorageService.get('booksSortingSettings');
+        if (!$scope.sortingSettings) {
+            $scope.sortingSettings = {
+                sortByProperty: "title",
+                sortInReverseOrder: false
+            };
+        }
+    }
+
+    _loadSortingSettings();
 
     $scope.sortBy = function (property) {
-        if ($scope.sortByProperty == property) {
-            $scope.sortInReverseOrder = !$scope.sortInReverseOrder;
+        if ($scope.sortingSettings.sortByProperty == property) {
+            $scope.sortingSettings.sortInReverseOrder = !$scope.sortingSettings.sortInReverseOrder;
         }
         else {
-            $scope.sortInReverseOrder = false;
-            $scope.sortByProperty = property;
+            $scope.sortingSettings.sortInReverseOrder = false;
+            $scope.sortingSettings.sortByProperty = property;
         }
+        _saveSortingSettings();
     }
 
 
