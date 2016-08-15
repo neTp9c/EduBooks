@@ -1,19 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 namespace Books.Api.ViewModels
 {
     public class BookVm
     {
         public int Id { get; set; }
+
+        [Required]
+        [MaxLength(30)]
         public string Title { get; set; }
+
+        [Required]
+        [Range(1, 10000)]
         public int PageCount { get; set; }
+
+        [Required]
+        [Range(1800, int.MaxValue)]
         public int PublicationYear { get; set; }
+
+        [RegularExpression(@"^(97(8|9))?\d{9}(\d|X)$")]
         public string Isbn { get; set; }
+
         public byte[] Image { get; set; }
+
         public PublisherVm Publisher { get; set; }
+
+        [MinLength(1)]
         public IEnumerable<AuthorVm> Authors { get; set; }
     }
 }
