@@ -14,6 +14,7 @@ using System.Reflection;
 using Books.Api.Services;
 using Books.Entities;
 using Books.Api.ViewModels;
+using MultipartDataMediaFormatter;
 
 [assembly: OwinStartup(typeof(Books.Api.Startup))]
 
@@ -31,7 +32,7 @@ namespace Books.Api
 
             ConfigRoutes(config);
             ConfigAutofacContainer(config, container);
-            ConfigJsonFormatter(config);
+            ConfigFormatters(config);
 
             app.UseAutofacMiddleware(container);
             app.UseAutofacWebApi(config);
@@ -67,10 +68,12 @@ namespace Books.Api
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
 
-        private void ConfigJsonFormatter(HttpConfiguration config)
+        private void ConfigFormatters(HttpConfiguration config)
         {
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            config.Formatters.Add(new FormMultipartEncodedMediaTypeFormatter());
         }
 
         private void SeedInitialData()

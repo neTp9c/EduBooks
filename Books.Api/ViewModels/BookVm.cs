@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MultipartDataMediaFormatter.Infrastructure;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Books.Api.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Books.Api.ViewModels
         [RegularExpression(@"^(\d{3})?\d{9}(\d|X)$")]
         public string Isbn { get; set; }
 
-        public byte[] Image { get; set; }
+        public HttpFile ImageFile { get; set; }
 
         public PublisherVm Publisher { get; set; }
 

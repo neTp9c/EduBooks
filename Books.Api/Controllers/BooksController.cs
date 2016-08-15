@@ -52,7 +52,7 @@ namespace Books.Api.Controllers
                 PageCount = bookVm.PageCount,
                 Isbn = bookVm.Isbn,
                 PublicationYear = bookVm.PublicationYear,
-                Image = bookVm.Image
+                //Image = bookVm.Image
             };
 
             foreach (var authorVm in bookVm.Authors)
@@ -81,6 +81,8 @@ namespace Books.Api.Controllers
         }
 
         // PUT api/<controller>/5
+        [HttpPost]
+        // MultipartDataMediaFormatter.Infrastructure.FormData formData
         public IHttpActionResult Put(int id, BookVm bookVm)
         {
             if (!ModelState.IsValid)
@@ -94,9 +96,9 @@ namespace Books.Api.Controllers
             book.PageCount = bookVm.PageCount;
             book.Isbn = bookVm.Isbn;
             book.PublicationYear = bookVm.PublicationYear;
-            book.Image = bookVm.Image;
+            //book.Image = bookVm.Image;
 
-            if(bookVm.Publisher != null)
+            if (bookVm.Publisher != null)
             {
                 book.Publisher.Name = bookVm.Publisher.Name;
             }
@@ -108,7 +110,7 @@ namespace Books.Api.Controllers
 
             var remainingAuthorIds = bookVm.Authors.Where(a => a.Id > 0).Select(a => a.Id).ToList();
             var bookAuthorsToDelete = book.BookAuthors.Where(ba => !remainingAuthorIds.Contains(ba.Author.Id)).ToList();
-            foreach(var bookAuthorToDelete in bookAuthorsToDelete)
+            foreach (var bookAuthorToDelete in bookAuthorsToDelete)
             {
                 // should delete author or not?
                 book.BookAuthors.Remove(bookAuthorToDelete);
@@ -117,15 +119,16 @@ namespace Books.Api.Controllers
             foreach (var authorVm in bookVm.Authors)
             {
                 Author author = null;
-                if(authorVm.Id > 0)
+                if (authorVm.Id > 0)
                 {
                     author = book.BookAuthors.SingleOrDefault(ba => ba.Author.Id == authorVm.Id).Author;
                 }
-                
-                if(author == null)
+
+                if (author == null)
                 {
                     author = new Author();
-                    book.BookAuthors.Add(new BookAuthor {
+                    book.BookAuthors.Add(new BookAuthor
+                    {
                         Author = author
                     });
                 }
