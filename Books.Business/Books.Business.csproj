@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacModule.cs" />
+    <Compile Include="IAuthorManager.cs" />
     <Compile Include="IBookManager.cs" />
     <Compile Include="DataSeed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

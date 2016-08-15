@@ -9,6 +9,7 @@ namespace Books.Business
             builder.RegisterModule(new Data.AutofacModule());
 
             builder.RegisterType<BookManager>().As<IBookManager>().InstancePerRequest();
+            builder.RegisterType<AuthorManager>().As<IAuthorManager>().InstancePerRequest();
 
             base.Load(builder);
         }

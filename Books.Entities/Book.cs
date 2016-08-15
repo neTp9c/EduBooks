@@ -8,6 +8,11 @@ namespace Books.Entities
 {
     public class Book
     {
+        public Book()
+        {
+            BookAuthors = new List<BookAuthor>();
+        }
+
         public int Id { get; set; }
         public string Title { get; set; }
         public int PageCount { get; set; }
