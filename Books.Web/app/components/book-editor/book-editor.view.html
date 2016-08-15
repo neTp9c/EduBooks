@@ -2,11 +2,17 @@
     <div class="row">
         <div class="col-xs-4">
             <h2>Books</h2>
-            <div data-ng-repeat="book in books"
+            <div>
+                Sort by:
+                <a ng-click="sortBy('title')" class="sort-by__item">title</a>
+                <a class="sort-by__item" ng-click="sortBy('publicationYear')">publication year</a>
+            </div>
+            <div data-ng-repeat="book in books | orderBy:sortByProperty:sortInReverseOrder"
                  data-ng-click="setEditedBook(book)"
                  data-ng-class="{'active':isCurrentItem(book.id), 'panel panel-default book summary':true}">
                 <div class="panel-body">
                     <h4>{{book.title}}</h4>
+                    <div>{{ book.publicationYear }}</div>
                 </div>
             </div>
         </div>
@@ -24,19 +30,19 @@
                         <div ng-message="maxlength">This field can be at most 30 characters long.</div>
                     </div>
                 </div>
-                <div class="form-group">    
+                <div class="form-group">
                     <label for="authors">Authors</label>
                     <div ng-repeat="author in editedBook.authors" class="form-inline row form-book__form-author">
                         <div class="form-group col-xs-5">
                             <label for="{{ getControlName('firstName', $index) }}">First name</label>
                             <input type="text"
-                                    name="{{ getControlName('firstName', $index) }}"
-                                    class="form-control"
-                                    required maxlength="20"
-                                    data-ng-model="author.firstName" />
+                                   name="{{ getControlName('firstName', $index) }}"
+                                   class="form-control"
+                                   required maxlength="20"
+                                   data-ng-model="author.firstName" />
                             <div class="validation-errors"
-                                    ng-messages="formEditBook[getControlName('firstName', $index)].$error"
-                                    ng-show="formEditBook[getControlName('firstName', $index)].$touched || formEditBook.$submitted">
+                                 ng-messages="formEditBook[getControlName('firstName', $index)].$error"
+                                 ng-show="formEditBook[getControlName('firstName', $index)].$touched || formEditBook.$submitted">
                                 <div ng-message="required">Please enter a value for this field.</div>
                                 <div ng-message="maxlength">This field can be at most 20 characters long.</div>
                             </div>
@@ -44,13 +50,13 @@
                         <div class="form-group col-xs-5">
                             <label for="{{ getControlName('lastName', $index) }}">Last name</label>
                             <input type="text"
-                                    name="{{ getControlName('lastName', $index) }}"
-                                    class="form-control"
-                                    required maxlength="20"
-                                    data-ng-model="author.lastName"/>
+                                   name="{{ getControlName('lastName', $index) }}"
+                                   class="form-control"
+                                   required maxlength="20"
+                                   data-ng-model="author.lastName" />
                             <div class="validation-errors"
-                                    ng-messages="formEditBook[getControlName('lastName', $index)].$error"
-                                    ng-show="formEditBook[getControlName('lastName', $index)].$touched || formEditBook.$submitted">
+                                 ng-messages="formEditBook[getControlName('lastName', $index)].$error"
+                                 ng-show="formEditBook[getControlName('lastName', $index)].$touched || formEditBook.$submitted">
                                 <div ng-message="required">Please enter a value for this field.</div>
                                 <div ng-message="maxlength">This field can be at most 20 characters long.</div>
                             </div>
@@ -73,7 +79,7 @@
                 </div>
                 <div class="form-group">
                     <label for="publisher">Publisher</label>
-                    <input type="text" name="publisher" class="form-control" ng-maxlength="30" data-ng-model="editedBook.publisher.name"/>
+                    <input type="text" name="publisher" class="form-control" ng-maxlength="30" data-ng-model="editedBook.publisher.name" />
                     <div class="validation-errors"
                          ng-messages="formEditBook.publisher.$error"
                          ng-show="formEditBook.publisher.$touched || formEditBook.$submitted">
@@ -124,11 +130,13 @@
                     </span>
                     <span ng-show="imageFile.result">Upload Successful</span>
                     <span class="err" ng-show="errorMsg">{{errorMsg}}</span>-->
+                    </d
+                    iv
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-default"
                            data-ng-click="formEditBook.$valid && addBook()"
-                           data-ng-if="!isEditing()"/>
+                           data-ng-if="!isEditing()" />
                     <input type="submit" value="Update" class="btn btn-default"
                            data-ng-click="formEditBook.$valid && updateBook()"
                            data-ng-if="isEditing()" />

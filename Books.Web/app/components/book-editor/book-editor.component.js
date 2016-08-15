@@ -4,6 +4,20 @@
 });
 
 function bookEditorController($scope, bookService) {
+    $scope.sortByProperty = "title";
+    $scope.sortInReverseOrder = false;
+
+    $scope.sortBy = function (property) {
+        if ($scope.sortByProperty == property) {
+            $scope.sortInReverseOrder = !$scope.sortInReverseOrder;
+        }
+        else {
+            $scope.sortInReverseOrder = false;
+            $scope.sortByProperty = property;
+        }
+    }
+
+
     $scope.books = [];
 
     var createEmptyBook = function () {
