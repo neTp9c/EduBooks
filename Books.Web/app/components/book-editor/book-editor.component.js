@@ -15,6 +15,18 @@ function bookEditorController($scope, bookService) {
     $scope.editedBook = createEmptyBook();
     $scope.originalEditedBook = null;
 
+    $scope.getBookImageUrl = function (bookId) {
+        return bookService.getBookImageUrl(bookId);
+    };
+
+    $scope.markImageToRemove = function (book) {
+        book.isNeedRemoveImage = true;
+    }
+
+    $scope.markImageToNotRemove = function (book) {
+        book.isNeedRemoveImage = false;
+    }
+
     $scope.isEditing = function () {
         return $scope.originalEditedBook != null;
     }
@@ -46,14 +58,14 @@ function bookEditorController($scope, bookService) {
         $scope.formEditBook.$setUntouched();
     }
     
-    var showResponseErrorMessage = function (response) {
+    var _showResponseErrorMessage = function (response) {
         var errors = [];
         for (var key in response.data.modelState) {
             for (var i = 0; i < response.data.modelState[key].length; i++) {
                 errors.push(response.data.modelState[key][i]);
             }
         }
-        alert("Failed due to:" + errors.join(' '));
+        alert("Failed due to: " + errors.join(' '));
     };
 
     $scope.addBook = function () {
@@ -63,7 +75,7 @@ function bookEditorController($scope, bookService) {
                 $scope.cancelEditing();
             },
             function (response) {
-                showResponseErrorMessage();
+                _showResponseErrorMessage(response);
             }
         );
     };
@@ -77,7 +89,7 @@ function bookEditorController($scope, bookService) {
                 $scope.cancelEditing();
             },
             function (response) {
-                showResponseErrorMessage();
+                _showResponseErrorMessage(response);
             }
         );
     };
@@ -95,7 +107,7 @@ function bookEditorController($scope, bookService) {
                 $scope.cancelEditing();
             },
             function (response) {
-                showResponseErrorMessage();
+                _showResponseErrorMessage(response);
             }
         );
     };

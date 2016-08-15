@@ -15,9 +15,16 @@
     border-color: red;
 }
 .author-remove,
-.author-add {
+.author-add,
+.form-book__image__remove,
+.form-book__image__restore {
     cursor: pointer;
 }
 .form-book__form-author {
     margin-bottom: 15px;
+}
+
+.form-book__image {
+    max-width: 200px;
+    max-height: 200px;
 }

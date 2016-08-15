@@ -96,16 +96,27 @@
                     <div class="validation-errors"
                          ng-messages="formEditBook.isbn.$error"
                          ng-show="formEditBook.isbn.$touched || formEditBook.$submitted">
-                        <div ng-message="pattern">Please enter corrent ISBN without spaces or dashes.</div>
+                        <div ng-message="pattern">Please enter correct ISBN without spaces or dashes.</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="imageFile">Image</label>
-                    <input type="file" ngf-select ng-model="editedBook.imageFile" name="imageFile" accept="image/*">
-                    <div class="validation-errors"
-                         ng-messages="formEditBook.imageFile.$error"
-                         ng-show="formEditBook.imageFile.$touched || formEditBook.$submitted">
-                        <div ng-message="pattern">Please select image file.</div>
+                    <div ng-switch on="editedBook.isImageExists && !editedBook.isNeedRemoveImage">
+                        <div ng-switch-when="true">
+                            <img data-ng-src="{{ getBookImageUrl(editedBook.id) }}" class="form-book__image" />
+                            <a class="form-book__image__remove" ng-click="markImageToRemove(editedBook)">Remove image</a>
+                        </div>
+                        <div ng-switch-default>
+                            <input type="file" ngf-select ng-model="editedBook.imageFile" name="imageFile" accept="image/*">
+                            <div class="validation-errors"
+                                 ng-messages="formEditBook.imageFile.$error"
+                                 ng-show="formEditBook.imageFile.$touched || formEditBook.$submitted">
+                                <div ng-message="pattern">Please select image file.</div>
+                            </div>
+                            <a class="form-book__image__restore"
+                               ng-click="markImageToNotRemove(editedBook)"
+                               ng-if="editedBook.isImageExists && editedBook.isNeedRemoveImage">Restore image</a>
+                        </div>
                     </div>
                     <!--<span class="progress" ng-show="imageFile.progress >= 0">
                         <div style="width:{{imageFile.progress}}%"

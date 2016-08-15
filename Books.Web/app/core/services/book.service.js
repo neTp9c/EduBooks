@@ -37,11 +37,16 @@
         return $http.get(_getUrl(bookId));
     }
 
+    var _getBookImageUrl = function (bookId) {
+        return _baseUrl + "/" + bookId + "/image";
+    }
+
     bookServiceFactory.addBook = _addBook;
     bookServiceFactory.updateBook = _updateBook;
     bookServiceFactory.deleteBook = _deleteBook;
     bookServiceFactory.getBook = _getBook;
     bookServiceFactory.getBooks = _getBooks;
+    bookServiceFactory.getBookImageUrl = _getBookImageUrl;
 
     return bookServiceFactory;
 }]);

@@ -4,6 +4,9 @@ using Books.Business;
 using Books.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace Books.Api.Controllers
@@ -33,9 +36,15 @@ namespace Books.Api.Controllers
             return books;
         }
 
-        public string Get(int id)
+        [Route("api/books/{id}/image")]
+        public HttpResponseMessage GetBookImage(int id)
         {
-            return "value";
+            var book = _bookManager.GetBook(id);
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new ByteArrayContent(book.Image);
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
+            return result;
         }
 
         // POST api/<controller>
@@ -54,6 +63,11 @@ namespace Books.Api.Controllers
                 PublicationYear = bookVm.PublicationYear,
                 //Image = bookVm.Image
             };
+
+            if (bookVm.ImageFile != null)
+            {
+                book.Image = bookVm.ImageFile.Buffer;
+            }
 
             foreach (var authorVm in bookVm.Authors)
             {
@@ -92,12 +106,29 @@ namespace Books.Api.Controllers
 
             var book = _bookManager.GetBook(id);
 
+
+
+            // plain book properties
             book.Title = bookVm.Title;
             book.PageCount = bookVm.PageCount;
             book.Isbn = bookVm.Isbn;
             book.PublicationYear = bookVm.PublicationYear;
-            //book.Image = bookVm.Image;
+            
 
+
+            // image file
+            if(bookVm.ImageFile != null)
+            {
+                book.Image = bookVm.ImageFile.Buffer;
+            }
+            else if(bookVm.IsNeedRemoveImage)
+            {
+                book.Image = null;
+            }
+
+
+
+            // publisher
             if (bookVm.Publisher != null)
             {
                 book.Publisher.Name = bookVm.Publisher.Name;
@@ -108,6 +139,9 @@ namespace Books.Api.Controllers
                 book.Publisher = null;
             }
 
+
+
+            // authors
             var remainingAuthorIds = bookVm.Authors.Where(a => a.Id > 0).Select(a => a.Id).ToList();
             var bookAuthorsToDelete = book.BookAuthors.Where(ba => !remainingAuthorIds.Contains(ba.Author.Id)).ToList();
             foreach (var bookAuthorToDelete in bookAuthorsToDelete)
@@ -137,6 +171,9 @@ namespace Books.Api.Controllers
                 author.LastName = authorVm.LastName;
             }
 
+
+
+            // update book
             _bookManager.Update(book);
 
             return Ok(_bookToBookVmConverter.Convert(book));

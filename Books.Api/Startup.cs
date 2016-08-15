@@ -56,6 +56,8 @@ namespace Books.Api
 
         private void ConfigRoutes(HttpConfiguration config)
         {
+            config.MapHttpAttributeRoutes();
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

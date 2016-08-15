@@ -19,10 +19,12 @@ namespace Books.Api.ViewModels
         [Range(1800, int.MaxValue)]
         public int PublicationYear { get; set; }
 
-        [RegularExpression(@"^(\d{3})?\d{9}(\d|X)$")]
+        [RegularExpression(@"^(()|((\d{3})?\d{9}(\d|X)))$")]
         public string Isbn { get; set; }
 
         public HttpFile ImageFile { get; set; }
+        public bool IsImageExists { get; set; }
+        public bool IsNeedRemoveImage { get; set; }
 
         public PublisherVm Publisher { get; set; }
 

@@ -26,7 +26,8 @@ namespace Books.Api.Services
                 PageCount = book.PageCount,
                 PublicationYear = book.PublicationYear,
                 Isbn = book.Isbn,
-                //ImageUrl = book.Image,
+                IsNeedRemoveImage = false,
+                IsImageExists = book.Image != null,
                 Publisher = book.Publisher != null
                     ? _publisherToPublisherVmConverter.Convert(book.Publisher)
                     : null,
