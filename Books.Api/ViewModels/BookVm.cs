@@ -18,7 +18,7 @@ namespace Books.Api.ViewModels
         [Range(1800, int.MaxValue)]
         public int PublicationYear { get; set; }
 
-        [RegularExpression(@"^(97(8|9))?\d{9}(\d|X)$")]
+        [RegularExpression(@"^(\d{3})?\d{9}(\d|X)$")]
         public string Isbn { get; set; }
 
         public byte[] Image { get; set; }
