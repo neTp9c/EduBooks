@@ -1,3 +1,123 @@
-﻿<div ng-repeat="book in books">
-    <h3>{{book.title}}</h3>
+﻿<div class="container">
+    <div class="row">
+        <div class="col-xs-4">
+            <h2>Books</h2>
+            <div data-ng-repeat="book in books"
+                 data-ng-click="setEditedBook(book)"
+                 data-ng-class="{'active':isCurrentItem(book.id), 'panel panel-default book summary':true}">
+                <div class="panel-body">
+                    <h4>{{book.title}}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <form name="formEditBook" class="form-create-book" role="form" novalidate>
+                <h2 ng-if="!isEditing()">Create a new book</h2>
+                <h2 ng-if="isEditing()">Edit "{{ originalEditedBook.title }}"</h2>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control" ng-required="true" ng-maxlength="30" data-ng-model="editedBook.title" />
+                    <div class="validation-errors"
+                         ng-messages="formEditBook.title.$error"
+                         ng-show="formEditBook.title.$touched || formEditBook.$submitted">
+                        <div ng-message="required">Please enter a value for this field.</div>
+                        <div ng-message="maxlength">This field can be at most 30 characters long.</div>
+                    </div>
+                </div>
+                <div class="form-group">    
+                    <label for="authors">Authors</label>
+                    <div ng-repeat="author in editedBook.authors" class="form-inline row form-book__form-author">
+                        <div class="form-group col-xs-5">
+                            <label for="{{ getControlName('firstName', $index) }}">First name</label>
+                            <input type="text"
+                                    name="{{ getControlName('firstName', $index) }}"
+                                    class="form-control"
+                                    required maxlength="20"
+                                    data-ng-model="author.firstName" />
+                            <div class="validation-errors"
+                                    ng-messages="formEditBook[getControlName('firstName', $index)].$error"
+                                    ng-show="formEditBook[getControlName('firstName', $index)].$touched || formEditBook.$submitted">
+                                <div ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="maxlength">This field can be at most 20 characters long.</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-5">
+                            <label for="{{ getControlName('lastName', $index) }}">Last name</label>
+                            <input type="text"
+                                    name="{{ getControlName('lastName', $index) }}"
+                                    class="form-control"
+                                    required maxlength="20"
+                                    data-ng-model="author.lastName"/>
+                            <div class="validation-errors"
+                                    ng-messages="formEditBook[getControlName('lastName', $index)].$error"
+                                    ng-show="formEditBook[getControlName('lastName', $index)].$touched || formEditBook.$submitted">
+                                <div ng-message="required">Please enter a value for this field.</div>
+                                <div ng-message="maxlength">This field can be at most 20 characters long.</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-2">
+                            <a class="author-remove" ng-click="removeAuthor(author)" ng-show="editedBook.authors.length > 1">remove</a>
+                        </div>
+                    </div>
+                    <a class="author-add" ng-click="addEmptyAuthor(editedBook)">Add author</a>
+                </div>
+                <div class="form-group">
+                    <label for="pageCount">Page count</label>
+                    <input type="number" name="pageCount" class="form-control" required ng-min="1" ng-max="10000" data-ng-model="editedBook.pageCount" />
+                    <div class="validation-errors"
+                         ng-messages="formEditBook.pageCount.$error"
+                         ng-show="formEditBook.pageCount.$touched || formEditBook.$submitted">
+                        <div ng-message="required">Please enter a value for this field.</div>
+                        <div ng-message="min || max">The value must be in range 1 to 10000.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="publisher">Publisher</label>
+                    <input type="text" name="publisher" class="form-control" ng-maxlength="30" data-ng-model="editedBook.publisher.name"/>
+                    <div class="validation-errors"
+                         ng-messages="formEditBook.publisher.$error"
+                         ng-show="formEditBook.publisher.$touched || formEditBook.$submitted">
+                        <div ng-message="maxlength">This field can be at most 30 characters long.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="publicationYear">Publication year</label>
+                    <input type="number" name="publicationYear" class="form-control" ng-required="true" ng-min="1800" data-ng-model="editedBook.publicationYear" />
+                    <div class="validation-errors"
+                         ng-messages="formEditBook.publicationYear.$error"
+                         ng-show="formEditBook.publicationYear.$touched || formEditBook.$submitted">
+                        <div ng-message="required">Please enter a value for this field.</div>
+                        <div ng-message="min">Value of this field can be at least 1800.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" name="isbn" class="form-control" ng-pattern="/^(\d{3})?\d{9}(\d|X)$/" data-ng-model="editedBook.isbn" />
+                    <div class="validation-errors"
+                         ng-messages="formEditBook.isbn.$error"
+                         ng-show="formEditBook.isbn.$touched || formEditBook.$submitted">
+                        <div ng-message="pattern">Please enter corrent ISBN without spaces or dashes.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input type="file" name="image" accept="image/*" data-ng-model="editedBook.publicationYear" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default"
+                           data-ng-click="formEditBook.$valid && addBook()"
+                           data-ng-if="!isEditing()"/>
+                    <input type="submit" value="Update" class="btn btn-default"
+                           data-ng-click="formEditBook.$valid && updateBook()"
+                           data-ng-if="isEditing()" />
+                    <input type="submit" value="Cancel editing" class="btn btn-default"
+                           data-ng-click="cancelEditing()"
+                           data-ng-if="isEditing()" />
+                    <input type="submit" value="Delete" class="btn btn-default"
+                           data-ng-click="deleteBook()"
+                           data-ng-if="isEditing()" />
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

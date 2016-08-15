@@ -12,7 +12,7 @@
     };
 
     var _updateBook = function (book) {
-        return $http.put(_getUrl(bookId), book);
+        return $http.put(_getUrl(book.id), book);
     }
 
     var _deleteBook = function (bookId) {

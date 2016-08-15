@@ -1,1 +1,23 @@
-﻿
+﻿.book.summary {
+    cursor: pointer;
+}
+.book.summary:hover {
+    background: rgba(0,0,0,.03);
+}
+.book.summary.active {
+    background: rgba(0,0,0,.05);
+}
+.validation-errors {
+    color: red;
+}
+.ng-submitted .form-control.ng-invalid,
+.form-control.ng-touched.ng-invalid {
+    border-color: red;
+}
+.author-remove,
+.author-add {
+    cursor: pointer;
+}
+.form-book__form-author {
+    margin-bottom: 15px;
+}
