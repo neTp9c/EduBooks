@@ -25,6 +25,8 @@ namespace Books.Business
                 var authorRichardHelm = new Author { FirstName = "Richard", LastName = "Helm" };
                 var authorRalphJohnson = new Author { FirstName = "Ralph", LastName = "Johnson" };
                 var authorJohnVlissides = new Author { FirstName = "John", LastName = "Vlissides" };
+                var robertMartin = new Author { FirstName = "Robert", LastName = "C. Martin" };
+                var jeffreyRichter = new Author { FirstName = " Jeffrey", LastName = "Richter" };
 
                 bookContext.Authors.Add(authorErichGamma);
                 bookContext.Authors.Add(authorRichardHelm);
@@ -38,8 +40,12 @@ namespace Books.Business
                 // publishers
 
                 var publisherAddisonWesleyProfessional = new Publisher { Name = "Addison-Wesley Professional" };
+                var publisherPrenticeHall = new Publisher { Name = "Prentice Hall" };
+                var microsoftPress = new Publisher { Name = "Microsoft Press" };
 
                 bookContext.Publishers.Add(publisherAddisonWesleyProfessional);
+                bookContext.Publishers.Add(publisherPrenticeHall);
+                bookContext.Publishers.Add(microsoftPress);
 
                 bookContext.SaveChanges();
 
@@ -51,21 +57,43 @@ namespace Books.Business
                 {
                     new Book
                     {
-                        Title = "Design Patterns: Elements of Reusable Object-Oriented Software",
+                        Title = "Design Patterns: Gang Of Four",
                         Isbn = "8601419047741",
                         PublicationYear = 1994,
                         PageCount = 395,
                         Publisher = publisherAddisonWesleyProfessional,
-                        //PublisherId = publisherAddisonWesleyProfessional.Id,
                         BookAuthors = new List<BookAuthor> {
                             new BookAuthor { Author = authorErichGamma },
                             new BookAuthor { Author = authorRichardHelm },
                             new BookAuthor { Author = authorRalphJohnson },
                             new BookAuthor { Author = authorJohnVlissides }
                         }
-                    }
+                    },
+                    new Book
+                    {
+                        Title = "Clean Code",
+                        Isbn="9780132350884",
+                        PublicationYear = 2008,
+                        PageCount = 464,
+                        Publisher = publisherAddisonWesleyProfessional,
+                        BookAuthors = new List<BookAuthor> {
+                            new BookAuthor { Author = robertMartin }
+                        }
+                    },
+                    new Book
+                    {
+                        Title = "CLR via C#",
+                        Isbn="9780735667457",
+                        PublicationYear = 2012,
+                        PageCount = 896,
+                        Publisher = microsoftPress,
+                        BookAuthors = new List<BookAuthor> {
+                            new BookAuthor { Author = jeffreyRichter }
+                        }
+                    },
+                   
                 };
-
+                
                 bookContext.Books.AddRange(books);
 
                 bookContext.SaveChanges();
